@@ -1,21 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+
+//React Navgitaion Components
+import { NavigationContainer } from "@react-navigation/native";
+
+//Eva Design Components
+import * as eva from "@eva-design/eva";
+import { ApplicationProvider } from "@ui-kitten/components";
+
+//Stack Components
+import AuthStack from "./src/stacks/Auth.Stack";
+import HomeStack from "./src/stacks/Home.Stack";
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        {isLoggedIn ? <HomeStack /> : <AuthStack />}
+      </ApplicationProvider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
