@@ -12,7 +12,14 @@ import {
   Divider,
   SelectItem,
 } from "@ui-kitten/components";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+  PermissionsAndroid,
+} from "react-native";
 import { launchCamera } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadAgentToDatabase } from "../state";
@@ -49,27 +56,51 @@ const AddAgent = ({ navigation }) => {
   );
 
   //Functions
-  const cameraLaunch = () => {
+  const requestCameraPermission = async () => {
+    if (Platform.OS === "android") {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: "Camera Permission",
+            message: "App needs camera permission",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK",
+          }
+        );
+        // If CAMERA Permission is granted
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    } else return true;
+  };
+  const cameraLaunch = async () => {
     let options = {
       storageOptions: {
         skipBackup: true,
         path: "images",
       },
     };
-    launchCamera(options, (res) => {
-      console.log("Response = ", res);
-      if (res.didCancel) {
-        console.log("User cancelled image picker");
-      } else if (res.error) {
-        console.log("ImagePicker Error: ", res.error);
-      } else if (res.customButton) {
-        console.log("User tapped custom button: ", res.customButton);
-        alert(res.customButton);
-      } else {
-        console.log("response", JSON.stringify(res));
-        setPhoto(res);
-      }
-    });
+    let isCameraPermitted = await requestCameraPermission();
+    if (isCameraPermitted) {
+      launchCamera(options, (res) => {
+        console.log("Response = ", res);
+        if (res.didCancel) {
+          console.log("User cancelled image picker");
+        } else if (res.error) {
+          console.log("ImagePicker Error: ", res.error);
+        } else if (res.customButton) {
+          console.log("User tapped custom button: ", res.customButton);
+          alert(res.customButton);
+        } else {
+          console.log("response", JSON.stringify(res));
+          setPhoto(res);
+        }
+      });
+    }
   };
 
   const onUploadButtonPressed = () => {
