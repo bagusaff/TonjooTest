@@ -3,9 +3,7 @@
     "name": "TonjooTest",
     "slug": "TonjooTest",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   },
   "name": "TonjooTest"
 }

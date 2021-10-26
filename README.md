@@ -29,7 +29,19 @@ npx react-native run-android
 
 # 26/10/2021
 
-- UI Finished
+[x] UI Finished
+
+# 27/10/2021
+
+[x] Consume Api Tonjoo
+
+[x] Upload agent data
+
+[x] Capture picture only from camera
+
+[x] Network checker
+
+[] Offline Support
 
 ## License
 

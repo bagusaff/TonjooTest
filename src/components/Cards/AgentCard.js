@@ -9,31 +9,28 @@ import {
   Avatar,
 } from "@ui-kitten/components";
 
-const AgentCard = () => {
+const AgentCard = ({ props }) => {
   return (
     <Layout style={styles.container}>
       <View style={styles.wrapper}>
-        <Avatar
-          style={styles.avatar}
-          source={require("../../assets/icons/Avatar.png")}
-        />
+        <Avatar style={styles.avatar} source={{ uri: props.avatar }} />
         <View>
           <Text style={styles.InfoText} category="s1">
-            John Smith
+            {props.first_name} {props.last_name}
           </Text>
-          <Text style={styles.InfoText}>Male</Text>
-          <Text style={styles.InfoText}>John@Smith.com</Text>
+          <Text style={styles.InfoText}>{props.gender}</Text>
+          <Text style={styles.InfoText}>{props.email}</Text>
         </View>
       </View>
       <Divider />
-      <Button
+      {/* <Button
         style={styles.button}
         appearance="outline"
         status="success"
         disabled={false}
       >
         Save to Cloud
-      </Button>
+      </Button> */}
     </Layout>
   );
 };

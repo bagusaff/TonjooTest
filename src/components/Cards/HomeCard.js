@@ -4,6 +4,8 @@ import LinearGradient from "react-native-linear-gradient";
 import { Text } from "@ui-kitten/components";
 import AddAgent from "../../assets/icons/AddAgent.svg";
 import AgentsList from "../../assets/icons/AgentsList.svg";
+import DraftList from "../../assets/icons/DraftList.svg";
+import AgentDatabase from "../../assets/icons/AgentDatabase.svg";
 const HomeCard = ({ colors, title, onPress, image }) => {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
@@ -11,10 +13,15 @@ const HomeCard = ({ colors, title, onPress, image }) => {
         <Text category="h1" style={styles.banner}>
           {title}
         </Text>
+
         {image === "AddAgent" ? (
           <AddAgent style={styles.image} />
-        ) : (
+        ) : image === "AgentsList" ? (
           <AgentsList style={styles.image} />
+        ) : image === "DraftList" ? (
+          <DraftList style={styles.image} />
+        ) : (
+          <AgentDatabase style={styles.image} />
         )}
       </LinearGradient>
     </TouchableOpacity>

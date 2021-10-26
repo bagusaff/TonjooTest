@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Layout,
-  Text,
   Icon,
   Input,
   Button,
@@ -13,7 +12,10 @@ import {
   Divider,
   SelectItem,
 } from "@ui-kitten/components";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { launchCamera } from "react-native-image-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadAgentToDatabase } from "../state";
 
 //Gender Data
 const data = ["Male", "Female"];
@@ -22,6 +24,9 @@ const data = ["Male", "Female"];
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
 const AddAgent = ({ navigation }) => {
+  const dispatch = useDispatch();
+  //Redux State
+  const { isLoading } = useSelector((state) => state.agent);
   //Local State
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -42,6 +47,45 @@ const AddAgent = ({ navigation }) => {
       <Spinner status="basic" size="small" />
     </View>
   );
+
+  //Functions
+  const cameraLaunch = () => {
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: "images",
+      },
+    };
+    launchCamera(options, (res) => {
+      console.log("Response = ", res);
+      if (res.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (res.error) {
+        console.log("ImagePicker Error: ", res.error);
+      } else if (res.customButton) {
+        console.log("User tapped custom button: ", res.customButton);
+        alert(res.customButton);
+      } else {
+        console.log("response", JSON.stringify(res));
+        setPhoto(res);
+      }
+    });
+  };
+
+  const onUploadButtonPressed = () => {
+    const uploadData = {
+      firstName,
+      lastName,
+      displayValue,
+      email,
+      photo,
+    };
+    dispatch(uploadAgentToDatabase(uploadData));
+  };
+
+  const onDraftButtonPressed = () => {
+    console.log("Draft Pressed");
+  };
   return (
     <>
       <TopNavigation accessoryLeft={BackAction} title="Add New Agent" />
@@ -64,7 +108,9 @@ const AddAgent = ({ navigation }) => {
           placeholder="Default"
           value={displayValue}
           selectedIndex={selectedGender}
-          onSelect={(index) => setSelectedGender(index)}
+          onSelect={(index) => {
+            setSelectedGender(index);
+          }}
         >
           {data.map(renderOption)}
         </Select>
@@ -75,24 +121,45 @@ const AddAgent = ({ navigation }) => {
           keyboardType="email-address"
           onChangeText={(nextValue) => setEmail(nextValue)}
         />
-        <Button
-          style={[{ width: 200, height: 200 }, styles.input]}
-          appearance="outline"
-          status="info"
-          accessoryLeft={<Icon name="plus" />}
-          onPress={() => console.log("Pressed")}
-        />
+        {photo ? (
+          <>
+            <TouchableOpacity activeOpacity={0.8} onPress={cameraLaunch}>
+              <Image
+                source={{
+                  uri: photo.assets[0].uri,
+                }}
+                style={[
+                  {
+                    width: 200,
+                    height: 200,
+                    borderRadius: 5,
+                    marginBottom: 10,
+                  },
+                  styles.input,
+                ]}
+              />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Button
+            style={[{ width: 200, height: 200 }, styles.input]}
+            appearance="outline"
+            status="info"
+            accessoryLeft={<Icon name="plus" />}
+            onPress={cameraLaunch}
+          />
+        )}
         <Button
           style={styles.button}
-          accessoryLeft={LoadingIndicator}
-          onPress={() => console.log("pressed")}
+          disabled={true}
+          onPress={onDraftButtonPressed}
         >
           Save as Draft
         </Button>
         <Button
           style={styles.button}
-          accessoryLeft={LoadingIndicator}
-          onPress={() => console.log("pressed")}
+          accessoryLeft={isLoading ? LoadingIndicator : null}
+          onPress={onUploadButtonPressed}
           status="info"
         >
           Submit

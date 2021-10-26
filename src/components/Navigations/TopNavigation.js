@@ -9,20 +9,23 @@ import {
   TopNavigation,
   TopNavigationAction,
 } from "@ui-kitten/components";
-
+import { useDispatch } from "react-redux";
+import { logoutHandle } from "../../state";
 //Icons
 const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
-
-const InfoIcon = (props) => <Icon {...props} name="info" />;
 
 const LogoutIcon = (props) => <Icon {...props} name="log-out" />;
 
 const TopNav = () => {
+  const dispatch = useDispatch();
   //Local State
   const [menuVisible, setMenuVisible] = React.useState(false);
   //Local Function
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
+  };
+  const logoutButtonPressed = () => {
+    dispatch(logoutHandle());
   };
   // Local Components
   const renderMenuAction = () => (
@@ -35,7 +38,11 @@ const TopNav = () => {
         visible={menuVisible}
         onBackdropPress={toggleMenu}
       >
-        <MenuItem accessoryLeft={LogoutIcon} title="Logout" />
+        <MenuItem
+          accessoryLeft={LogoutIcon}
+          title="Logout"
+          onPress={logoutButtonPressed}
+        />
       </OverflowMenu>
     </React.Fragment>
   );

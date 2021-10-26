@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "235670145512",
+    "project_id": "tonjootest",
+    "storage_bucket": "tonjootest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235670145512:android:25f0856867cf304e6dbc5d",
+        "android_client_info": {
+          "package_name": "com.tonjootest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235670145512-j3c7s5pqp4qcfnc14tcmsc6af6bjf7jr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9MZKbPpmJ-trnxCgJ9gBPEf-SUBo1ZfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235670145512-j3c7s5pqp4qcfnc14tcmsc6af6bjf7jr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import {
   Layout,
   Icon,
@@ -8,36 +9,30 @@ import {
   List,
   Spinner,
 } from "@ui-kitten/components";
-import { StyleSheet, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-
-//Custom Component Import
-import { fetchAgents } from "../state";
 import AgentCard from "../components/Cards/AgentCard";
 
+import { useSelector, useDispatch } from "react-redux";
+import { fetchFirebaseAgent } from "../state";
 //Icons
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-const AgentLists = ({ navigation }) => {
+const AgentsFromDatabaseList = ({ navigation }) => {
   const dispatch = useDispatch();
   //Redux State
-  const { agents, isLoading } = useSelector((state) => state.agent);
-  const { token } = useSelector((state) => state.auth);
-
+  const { firebaseAgents, isLoading } = useSelector((state) => state.agent);
   //Local Components
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={() => navigation.goBack()} />
   );
   const renderItem = ({ item, index }) => <AgentCard props={item} />;
 
-  //functions
+  //Functions
   useEffect(() => {
-    dispatch(fetchAgents(token));
+    dispatch(fetchFirebaseAgent());
   }, []);
-
   return (
     <>
-      <TopNavigation accessoryLeft={BackAction} title="Agents List" />
+      <TopNavigation accessoryLeft={BackAction} title="Agents From Firebase" />
       <Divider />
       <Layout level="2" style={styles.container}>
         {isLoading ? (
@@ -45,14 +40,14 @@ const AgentLists = ({ navigation }) => {
             <Spinner />
           </View>
         ) : (
-          <List data={agents || []} renderItem={renderItem} />
+          <List data={firebaseAgents || []} renderItem={renderItem} />
         )}
       </Layout>
     </>
   );
 };
 
-export default AgentLists;
+export default AgentsFromDatabaseList;
 
 const styles = StyleSheet.create({
   container: {

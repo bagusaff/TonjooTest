@@ -13,17 +13,28 @@ import {
   Button,
   Spinner,
 } from "@ui-kitten/components";
+import { useDispatch, useSelector } from "react-redux";
+
+//Redux Functions
+import { loginHandle } from "../state";
 
 //Icons
 const PersonIcon = (props) => <Icon {...props} name="person" />;
 const LoginScreen = () => {
+  const dispatch = useDispatch();
+  //Redux State
+  const { isLoading } = useSelector((state) => state.auth);
   //Local State
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
+  //Functions
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
+  };
+  const loginButtonOnPress = () => {
+    dispatch(loginHandle(username, password));
   };
 
   //Local Component
@@ -64,8 +75,8 @@ const LoginScreen = () => {
         />
         <Button
           style={styles.button}
-          accessoryLeft={LoadingIndicator}
-          onPress={() => console.log("pressed")}
+          accessoryLeft={isLoading ? LoadingIndicator : null}
+          onPress={loginButtonOnPress}
         >
           Log In
         </Button>
