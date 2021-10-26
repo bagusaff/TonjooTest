@@ -25,6 +25,12 @@ Jalankan dengan perintah :
 npx react-native run-android
 ```
 
+## Progress
+
+# 26/10/2021
+
+- UI Finished
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
